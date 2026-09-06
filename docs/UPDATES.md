@@ -4,6 +4,11 @@ Running log of progress on the Driving Assistant. Newest first. The PR descripti
 
 ## 2026-09-06 (evening)
 
+- **Spotify is wired up.** Client ID is in `app/.env`; the app was added to the Spotify developer app's user list (dev mode allows up to 5 test accounts). Tapping Connect Spotify opens the real `accounts.spotify.com` sign-in with the correct client ID and `drivingassistant://oauth/spotify` redirect. Full sign-in + playback needs the app on a phone with a Premium account signed in.
+- Fixed: the Settings Connect button was greyed out for apps not installed on the phone; OAuth apps (Spotify/Slack/Discord) sign in through the browser, so they can now be connected regardless.
+- Note on scope: Spotify playback control is per-user Premium, and the dev-mode app is limited to allow-listed accounts until Spotify grants production access.
+
+
 - **Google Maps added** (per your ask): "navigate to X", "take me home", "directions to the nearest gas station" → `maps.navigate` opens Google Maps turn-by-turn (`comgooglemaps://?daddr=…`), Apple Maps when Google Maps is not installed. Verified by voice in the simulator (Apple Maps path). Google Maps has no public API to read ETA or reroute from another app, so this is start-directions only.
 
 - **Simulator walkthrough of onboarding + settings passed** (automated: idb taps + screenshots). Onboarding correctly offers only installed apps (in the simulator that is Messages and Phone; Spotify/Slack/Discord/Messenger show as "Not on this phone"). Contacts permission sheet handled; Settings "Test connection" reports the Luna model; tapping a voice speaks a preview. Cosmetic fixes landed (clipped pill labels, voice picker hint, gear accessibility label).
