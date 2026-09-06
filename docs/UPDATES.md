@@ -2,6 +2,16 @@
 
 Running log of progress on the Driving Assistant. Newest first. The PR description carries the current status summary and open questions.
 
+## 2026-09-06 (evening)
+
+- **Simulator walkthrough of onboarding + settings passed** (automated: idb taps + screenshots). Onboarding correctly offers only installed apps (in the simulator that is Messages and Phone; Spotify/Slack/Discord/Messenger show as "Not on this phone"). Contacts permission sheet handled; Settings "Test connection" reports the Luna model; tapping a voice speaks a preview. Cosmetic fixes landed (clipped pill labels, voice picker hint, gear accessibility label).
+- **Confirmation paths verified**: execute, revise ("actually say…" re-plans with the pending tool as context), cancel ("never mind"), and the no-model fast path for plain yes/no.
+- **Device build succeeds** (arm64, Metal whisper, signed with the Apple Development identity). Not yet installed on a device; only an iPad is plugged in.
+- **Local model work**:
+  - Kokoro int8 (v0.19) tried: 3.5x smaller but **~2x slower** on Apple silicon CPU (real-time factor 0.77 vs 0.37 for fp32). Kept optional (`KOKORO_INT8=1`), fp32 stays default.
+  - Kokoro now synthesizes clause by clause (sentence ends, plus commas/colons in long sentences) so speech starts sooner: first audio ~1.0 s instead of ~1.7 s on the same reply; ~1.9 s on a reply whose first sentence has no clause breaks. Further gains need streaming inside sherpa-onnx or a smaller first-clause model.
+  - `base.en` whisper is downloaded and selectable in Settings (Fast/Accurate); benchmarking it needs a real microphone.
+
 ## 2026-09-06 (afternoon)
 
 - **App is running in the iOS Simulator end to end.** Injected command → planner → Kokoro speaks the reply (first audio ~1.3 s after the reply arrives). Confirmation flow verified: "call 555 123 4567" → spoken question → "yes" (fast path, no model call) → tool executes → spoken summary.
