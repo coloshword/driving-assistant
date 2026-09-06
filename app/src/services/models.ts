@@ -10,7 +10,11 @@ const WHISPER_FILES: Record<WhisperModelChoice, string> = {
   base: 'ggml-base.en-q5_1.bin',
 };
 const VAD_FILENAME = 'ggml-silero-v6.2.0.bin';
-const KOKORO_DIR = 'sherpa-onnx-kokoro-en-v0_19';
+export type KokoroModelChoice = 'int8' | 'fp32';
+const KOKORO_DIRS: Record<KokoroModelChoice, string> = {
+  int8: 'sherpa-onnx-kokoro-int8-en-v0_19',
+  fp32: 'sherpa-onnx-kokoro-en-v0_19',
+};
 
 export const bundlePath = (name: string) => `${RNFS.MainBundlePath}/${name}`;
 
@@ -18,6 +22,15 @@ export type ModelLoadStatus = 'idle' | 'loading' | 'ready' | 'error';
 
 let loaded = false;
 let loadedWhisper: WhisperModelChoice | null = null;
+let loadedKokoro: KokoroModelChoice | null = null;
+
+export async function availableKokoroModels(): Promise<KokoroModelChoice[]> {
+  const out: KokoroModelChoice[] = [];
+  for (const choice of Object.keys(KOKORO_DIRS) as KokoroModelChoice[]) {
+    if (await RNFS.exists(bundlePath(KOKORO_DIRS[choice]))) out.push(choice);
+  }
+  return out;
+}
 
 export async function availableWhisperModels(): Promise<WhisperModelChoice[]> {
   const out: WhisperModelChoice[] = [];
@@ -33,17 +46,27 @@ export async function loadModels(onProgress?: (msg: string) => void): Promise<vo
   const available = await availableWhisperModels();
   const choice: WhisperModelChoice = available.includes(pref) ? pref : available[0] ?? 'tiny';
 
-  if (loaded && loadedWhisper === choice) return;
+  const kokoroPref = ((await getPref(PREF_KEYS.kokoroModel)) as KokoroModelChoice | null) ?? 'fp32';
+  const kokoroAvailable = await availableKokoroModels();
+  const kokoroChoice: KokoroModelChoice = kokoroAvailable.includes(kokoroPref) ? kokoroPref : kokoroAvailable[0] ?? 'fp32';
 
-  onProgress?.(`Loading speech model (${choice})`);
-  await NativeWhisper.loadModel(bundlePath(WHISPER_FILES[choice]));
-  loadedWhisper = choice;
+  if (loaded && loadedWhisper === choice && loadedKokoro === kokoroChoice) return;
+
+  if (loadedWhisper !== choice) {
+    onProgress?.(`Loading speech model (${choice})`);
+    await NativeWhisper.loadModel(bundlePath(WHISPER_FILES[choice]));
+    loadedWhisper = choice;
+  }
+
+  if (loadedKokoro !== kokoroChoice) {
+    onProgress?.(`Loading voice (${kokoroChoice})`);
+    await NativeKokoro.loadModel(bundlePath(KOKORO_DIRS[kokoroChoice]));
+    loadedKokoro = kokoroChoice;
+  }
 
   if (!loaded) {
     onProgress?.('Loading voice activity model');
     await NativeWhisper.initVad(bundlePath(VAD_FILENAME));
-    onProgress?.('Loading voice');
-    await NativeKokoro.loadModel(bundlePath(KOKORO_DIR));
     await NativeKokoro.configureAudioSession({
       category: 'playAndRecord',
       duckOthers: true,
