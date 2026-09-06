@@ -1,6 +1,7 @@
 #import "DAWhisperModule.h"
 #import <DAWhisperSpec/DAWhisperSpec.h>
 #include "whisper.h"
+#include <TargetConditionals.h>
 #include <algorithm>
 #include <string>
 #include <vector>
@@ -60,8 +61,14 @@ static std::vector<float> DAWhisperToFloat(NSArray<NSNumber *> *pcm) {
            reject:(RCTPromiseRejectBlock)reject {
   dispatch_async(_sttQueue, ^{
     struct whisper_context_params params = whisper_context_default_params();
+#if TARGET_OS_SIMULATOR
+    // The simulator's Metal driver (MTLSimDriver) traps in ggml_metal_buffer_set_tensor; run on CPU there.
+    params.use_gpu = false;
+    params.flash_attn = false;
+#else
     params.use_gpu = true;
     params.flash_attn = true;
+#endif
     struct whisper_context *ctx = whisper_init_from_file_with_params(modelPath.UTF8String, params);
     if (ctx == NULL) {
       reject(@"load_failed", [NSString stringWithFormat:@"whisper_init_from_file returned NULL for %@", modelPath], nil);

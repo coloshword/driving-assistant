@@ -36,14 +36,15 @@ export default function ToolIndicator({ tool, lastTranscript, lastReply }: Props
   if (!hasContent) return null;
 
   return (
-    <LinearGradient
-      colors={['rgba(255,255,255,0.12)', 'rgba(255,255,255,0.04)', 'rgba(255,255,255,0.08)']}
-      locations={[0, 0.5, 1]}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}
-      style={styles.glass}
-    >
-      <Animated.View style={{ opacity: fade, gap: 10 }}>
+    <View style={styles.glass}>
+      <LinearGradient
+        colors={['rgba(255,255,255,0.12)', 'rgba(255,255,255,0.04)', 'rgba(255,255,255,0.08)']}
+        locations={[0, 0.5, 1]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={StyleSheet.absoluteFill}
+      />
+      <Animated.View style={[styles.content, { opacity: fade }]}>
         {lastTranscript ? (
           <Text style={styles.transcript} numberOfLines={2}>“{lastTranscript}”</Text>
         ) : null}
@@ -73,12 +74,13 @@ export default function ToolIndicator({ tool, lastTranscript, lastReply }: Props
           </View>
         ) : null}
       </Animated.View>
-    </LinearGradient>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  glass: { alignSelf: 'center', width: '90%', borderRadius: 16, padding: 14, marginTop: 20, minHeight: 80 },
+  glass: { alignSelf: 'center', width: '90%', borderRadius: 16, padding: 14, marginTop: 20, overflow: 'hidden' },
+  content: { gap: 10 },
   transcript: { color: 'rgba(232,255,246,0.7)', fontSize: 15, fontStyle: 'italic' },
   reply: { color: '#e8fff6', fontSize: 17, fontWeight: '600', lineHeight: 23 },
   toolBlock: { gap: 8, marginTop: 4 },

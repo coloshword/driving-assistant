@@ -21,7 +21,25 @@ export function integrationForTool(toolName: string): Integration | undefined {
   return INTEGRATION_BY_ID[id];
 }
 
+const STATUS_TIMEOUT_MS = 3000;
+
+function withTimeout<T>(p: Promise<T>, ms: number, label: string): Promise<T> {
+  return new Promise<T>((resolve, reject) => {
+    const t = setTimeout(() => reject(new Error(`${label} status() timed out`)), ms);
+    p.then((v) => { clearTimeout(t); resolve(v); }, (e) => { clearTimeout(t); reject(e); });
+  });
+}
+
 export async function connectedIntegrationIds(): Promise<IntegrationId[]> {
-  const statuses = await Promise.all(INTEGRATIONS.map(async (i) => [i.id, (await i.status()).connected] as const));
+  const statuses = await Promise.all(
+    INTEGRATIONS.map(async (i) => {
+      try {
+        return [i.id, (await withTimeout(i.status(), STATUS_TIMEOUT_MS, i.id)).connected] as const;
+      } catch (e) {
+        console.log(`[registry] status() failed for ${i.id}`, e);
+        return [i.id, false] as const;
+      }
+    }),
+  );
   return statuses.filter(([, c]) => c).map(([id]) => id);
 }

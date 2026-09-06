@@ -28,7 +28,12 @@ async function hasPermission(): Promise<boolean> {
   // relaunches the app), so a positive answer can be cached for the process.
   if (permissionCache && granted(permissionCache)) return true;
   try {
-    permissionCache = await Contacts.checkPermission();
+    // react-native-contacts 8.x bug: on iOS 18+ its TurboModule checkPermission never
+    // resolves while the status is "not determined". Treat a stall as undetermined.
+    permissionCache = await Promise.race<Permission>([
+      Contacts.checkPermission(),
+      new Promise<Permission>((resolve) => setTimeout(() => resolve('undefined'), 1500)),
+    ]);
   } catch {
     permissionCache = 'undefined';
   }

@@ -38,7 +38,7 @@ export async function planRoute(ctx: Context) {
     message: { role: 'assistant', content: plan.assistant },
     tool: toAgentTool(plan),
   };
-  console.log(`[plan] ${latencyMs}ms attempts=${attempts} tool=${response.tool.tool || '-'} silent=${!!response.tool.silent} "${plan.assistant.slice(0, 80)}"`);
+  console.log(`[plan] integrations=[${connectedIntegrations.join(',')}] ${latencyMs}ms attempts=${attempts} tool=${response.tool.tool || '-'} silent=${!!response.tool.silent} "${plan.assistant.slice(0, 80)}"`);
   ctx.body = response;
 }
 

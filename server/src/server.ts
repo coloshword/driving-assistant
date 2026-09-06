@@ -48,6 +48,16 @@ export function createApp(): Koa {
     ctx.body = { ok: true, model: config.plannerModel, reasoning: config.plannerReasoningEffort };
   });
 
+  // Dev-only remote console for the app (see app/src/services/devConsole.ts).
+  router.post('/api/dev/log', (ctx) => {
+    const lines = ((ctx.request.body as any)?.lines ?? []) as Array<{ level: string; msg: string; at: number }>;
+    for (const l of lines) {
+      const t = new Date(l.at).toLocaleTimeString('en-US', { hour12: false });
+      console.log(`[app:${l.level}] ${t} ${l.msg}`);
+    }
+    ctx.body = { ok: true };
+  });
+
   router.post('/api/agent/plan', planRoute);
   router.post('/api/agent/executePermission', executePermissionRoute);
   router.post('/api/agent/summarize', summarizeRoute);

@@ -14,6 +14,7 @@ import { connectedIntegrationIds } from '../services/integrations/registry';
 import { contactNamesForVocabulary } from '../services/integrations/imessage';
 import { loadModels } from '../services/models';
 import { primeVocabulary } from '../services/vocabulary';
+import { useDevLinks } from '../services/devLinks';
 
 const HEADER_HEIGHT = 48;
 /** Set to true to type commands instead of speaking (simulator without a mic, CI). */
@@ -32,6 +33,8 @@ export default function Dashboard() {
     connectedIntegrations: connected,
     enabled: modelStatus === 'ready' && !DEV_TEXT_MODE,
   });
+
+  useDevLinks({ say: (text) => handleTranscript(text) });
 
   // Load models once.
   useEffect(() => {
