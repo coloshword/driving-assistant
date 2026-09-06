@@ -13,7 +13,7 @@ import { INTEGRATIONS } from '../services/integrations/registry';
 import { scanInstalledApps } from '../services/integrations/appScan';
 import type { ConnectionInfo, Integration, IntegrationId } from '../services/integrations/types';
 import { apiBaseUrl, serverHealth } from '../services/agent/api';
-import { availableWhisperModels, type WhisperModelChoice } from '../services/models';
+import { availableKokoroModels, availableWhisperModels, type KokoroModelChoice, type WhisperModelChoice } from '../services/models';
 import { KOKORO_VOICES, speak } from '../services/tts';
 import { PREF_KEYS, getPref, setPref } from '../services/storage';
 
@@ -22,6 +22,7 @@ type Nav = NativeStackNavigationProp<RootStackParamList>;
 const APP_VERSION = '0.1.0';
 const TTS_SPEEDS = [0.9, 1.0, 1.1, 1.25];
 const WHISPER_LABELS: Record<WhisperModelChoice, string> = { tiny: 'Fast', base: 'Accurate' };
+const KOKORO_LABELS: Record<KokoroModelChoice, string> = { int8: 'Small', fp32: 'Full' };
 type ImessageStrategy = 'draft' | 'shortcut';
 
 type AppRowState = {
@@ -142,6 +143,8 @@ export default function Settings() {
   // --- Voice --------------------------------------------------------------
   const [whisperOptions, setWhisperOptions] = useState<WhisperModelChoice[]>([]);
   const [whisperModel, setWhisperModel] = useState<WhisperModelChoice>('tiny');
+  const [kokoroOptions, setKokoroOptions] = useState<KokoroModelChoice[]>([]);
+  const [kokoroModel, setKokoroModel] = useState<KokoroModelChoice>('fp32');
   const [ttsVoice, setTtsVoice] = useState<number>(0);
   const [ttsSpeed, setTtsSpeed] = useState<number>(1.0);
   const [wakeWord, setWakeWord] = useState('');
@@ -149,9 +152,11 @@ export default function Settings() {
 
   useEffect(() => {
     (async () => {
-      const [models, model, voice, speed, wake, strategy] = await Promise.all([
+      const [models, model, kModels, kModel, voice, speed, wake, strategy] = await Promise.all([
         availableWhisperModels(),
         getPref(PREF_KEYS.whisperModel),
+        availableKokoroModels(),
+        getPref(PREF_KEYS.kokoroModel),
         getPref(PREF_KEYS.ttsVoice),
         getPref(PREF_KEYS.ttsSpeed),
         getPref(PREF_KEYS.wakeWord),
@@ -161,6 +166,9 @@ export default function Settings() {
       setWhisperOptions(models);
       const preferred = (model as WhisperModelChoice | null) ?? 'tiny';
       setWhisperModel(models.includes(preferred) ? preferred : models[0] ?? 'tiny');
+      setKokoroOptions(kModels);
+      const kPreferred = (kModel as KokoroModelChoice | null) ?? 'fp32';
+      setKokoroModel(kModels.includes(kPreferred) ? kPreferred : kModels[0] ?? 'fp32');
       if (voice !== null && !Number.isNaN(Number(voice))) setTtsVoice(Number(voice));
       if (speed !== null && !Number.isNaN(Number(speed))) setTtsSpeed(Number(speed));
       setWakeWord(wake ?? '');
@@ -171,6 +179,11 @@ export default function Settings() {
   const onWhisperModel = useCallback((m: WhisperModelChoice) => {
     setWhisperModel(m);
     setPref(PREF_KEYS.whisperModel, m);
+  }, []);
+
+  const onKokoroModel = useCallback((m: KokoroModelChoice) => {
+    setKokoroModel(m);
+    setPref(PREF_KEYS.kokoroModel, m);
   }, []);
 
   const onTtsVoice = useCallback(
@@ -280,9 +293,22 @@ export default function Settings() {
             )}
             <Text style={styles.fieldHint}>Fast answers quicker; Accurate understands more. Takes effect the next time the app starts listening.</Text>
           </Row>
+          {kokoroOptions.length > 1 ? (
+            <Row column>
+              <Text style={styles.fieldLabel}>Voice model</Text>
+              <PillGroup
+                segmented
+                options={kokoroOptions.map((m) => ({ value: m, label: KOKORO_LABELS[m] }))}
+                value={kokoroModel}
+                onChange={onKokoroModel}
+              />
+              <Text style={styles.fieldHint}>Full is fastest. Small is the quantized voice, about a third of the size but slower to start speaking. Takes effect on next launch.</Text>
+            </Row>
+          ) : null}
           <Row column>
             <Text style={styles.fieldLabel}>Assistant voice</Text>
             <PillGroup scroll options={KOKORO_VOICES.map((v) => ({ value: v.id, label: v.label }))} value={ttsVoice} onChange={onTtsVoice} />
+            <Text style={styles.fieldHint}>Swipe for more voices. Tap one to hear it.</Text>
             <Text style={styles.fieldHint}>Tap a voice to hear it.</Text>
           </Row>
           <Row column>

@@ -3,6 +3,7 @@
 #
 #   scripts/fetch-models.sh                 # tiny.en whisper + silero VAD + kokoro v0.19 + sherpa-onnx
 #   scripts/fetch-models.sh --whisper base  # also grab base.en (more accurate, ~2x slower)
+#   KOKORO_INT8=1 scripts/fetch-models.sh   # also grab the int8 Kokoro (smaller app, but slower synthesis)
 #   scripts/fetch-models.sh --from /path/to/work_from_car   # copy from a local WorkFromCar checkout instead of downloading
 set -euo pipefail
 
@@ -49,15 +50,20 @@ fi
 echo "[fetch-models] silero VAD"
 dl "https://huggingface.co/ggml-org/whisper-vad/resolve/main/ggml-silero-v6.2.0.bin" "${MODELS}/ggml-silero-v6.2.0.bin"
 
-echo "[fetch-models] kokoro v0.19 (sherpa-onnx packaging, includes espeak-ng-data)"
-if [ ! -d "${MODELS}/sherpa-onnx-kokoro-en-v0_19" ]; then
+fetch_kokoro() { # variant-dir-name archive-name
+  if [ -d "${MODELS}/$1" ]; then echo "  have $1/"; return; fi
   TMP="$(mktemp -d)"
-  dl "https://github.com/k2-fsa/sherpa-onnx/releases/download/tts-models/kokoro-en-v0_19.tar.bz2" "${TMP}/kokoro.tar.bz2"
+  dl "https://github.com/k2-fsa/sherpa-onnx/releases/download/tts-models/$2.tar.bz2" "${TMP}/kokoro.tar.bz2"
   tar -xjf "${TMP}/kokoro.tar.bz2" -C "${TMP}"
-  mv "${TMP}/kokoro-en-v0_19" "${MODELS}/sherpa-onnx-kokoro-en-v0_19"
+  mv "${TMP}/$2" "${MODELS}/$1"
   rm -rf "${TMP}"
-else
-  echo "  have sherpa-onnx-kokoro-en-v0_19/"
+}
+echo "[fetch-models] kokoro v0.19 fp32 (default voice model, ~340 MB; fastest on Apple silicon)"
+fetch_kokoro sherpa-onnx-kokoro-en-v0_19 kokoro-en-v0_19
+if [ "${KOKORO_INT8:-0}" = "1" ]; then
+  # 3.5x smaller but ~2x slower in onnxruntime's CPU int8 path (measured rtf 0.77 vs 0.37).
+  echo "[fetch-models] kokoro v0.19 int8 (KOKORO_INT8=1, ~100 MB)"
+  fetch_kokoro sherpa-onnx-kokoro-int8-en-v0_19 kokoro-int8-en-v0_19
 fi
 
 echo "[fetch-models] sherpa-onnx ${SHERPA_VERSION} ios xcframework"

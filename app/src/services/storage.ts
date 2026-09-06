@@ -40,6 +40,7 @@ export const PREF_KEYS = {
   whisperModel: 'pref.whisperModel', // 'tiny' | 'base'
   ttsSpeed: 'pref.ttsSpeed',
   ttsVoice: 'pref.ttsVoice',
+  kokoroModel: 'pref.kokoroModel', // 'int8' | 'fp32'
   wakeWord: 'pref.wakeWord', // '' = always listening
   skippedIntegrations: 'pref.skippedIntegrations', // JSON string[]
   imessageStrategy: 'pref.imessageStrategy', // 'draft' | 'shortcut'

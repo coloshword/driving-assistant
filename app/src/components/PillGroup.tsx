@@ -26,7 +26,12 @@ export default function PillGroup<T extends string | number>({ options, value, o
         onPress={() => onChange(o.value)}
         style={({ pressed }) => [styles.pill, segmented && styles.pillSegmented, selected && styles.pillSelected, pressed && styles.pressed]}
       >
-        <Text style={[styles.label, selected && styles.labelSelected]} numberOfLines={1}>
+        <Text
+          style={[styles.label, selected && styles.labelSelected]}
+          numberOfLines={1}
+          adjustsFontSizeToFit
+          minimumFontScale={0.75}
+        >
           {o.label}
         </Text>
       </Pressable>
@@ -34,7 +39,7 @@ export default function PillGroup<T extends string | number>({ options, value, o
   });
   if (scroll) {
     return (
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.scrollRow}>
+      <ScrollView horizontal showsHorizontalScrollIndicator contentContainerStyle={styles.scrollRow}>
         {pills}
       </ScrollView>
     );
@@ -68,6 +73,7 @@ const styles = StyleSheet.create({
   },
   pillSegmented: {
     flex: 1,
+    paddingHorizontal: 8,
   },
   pillSelected: {
     backgroundColor: colors.accentBg,

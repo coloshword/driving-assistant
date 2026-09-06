@@ -20,6 +20,7 @@ resources = [
   ['ggml-base.en-q5_1.bin', 'archive.macbinary'],
   ['ggml-silero-v6.2.0.bin', 'archive.macbinary'],
   ['sherpa-onnx-kokoro-en-v0_19', 'folder'],
+  ['sherpa-onnx-kokoro-int8-en-v0_19', 'folder'],
 ]
 
 resources.each do |name, type|
