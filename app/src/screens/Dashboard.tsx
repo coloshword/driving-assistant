@@ -96,7 +96,13 @@ export default function Dashboard() {
     <View style={styles.root}>
       <View style={[styles.topbar, { paddingTop: insets.top, height: insets.top + HEADER_HEIGHT }]}>
         <Text style={styles.title}>Driving Assistant</Text>
-        <Pressable style={styles.gearBtn} onPress={() => navigation.navigate('Settings')} hitSlop={10}>
+        <Pressable
+          style={styles.gearBtn}
+          onPress={() => navigation.navigate('Settings')}
+          hitSlop={10}
+          accessibilityRole="button"
+          accessibilityLabel="Settings"
+        >
           <GearIcon size={26} />
         </Pressable>
       </View>

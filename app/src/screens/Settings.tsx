@@ -283,6 +283,7 @@ export default function Settings() {
           <Row column>
             <Text style={styles.fieldLabel}>Assistant voice</Text>
             <PillGroup scroll options={KOKORO_VOICES.map((v) => ({ value: v.id, label: v.label }))} value={ttsVoice} onChange={onTtsVoice} />
+            <Text style={styles.fieldHint}>Swipe for more voices. Tap one to hear it.</Text>
             <Text style={styles.fieldHint}>Tap a voice to hear it.</Text>
           </Row>
           <Row column>
