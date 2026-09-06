@@ -4,6 +4,8 @@ Running log of progress on the Driving Assistant. Newest first. The PR descripti
 
 ## 2026-09-06 (evening)
 
+- **Google Maps added** (per your ask): "navigate to X", "take me home", "directions to the nearest gas station" → `maps.navigate` opens Google Maps turn-by-turn (`comgooglemaps://?daddr=…`), Apple Maps when Google Maps is not installed. Verified by voice in the simulator (Apple Maps path). Google Maps has no public API to read ETA or reroute from another app, so this is start-directions only.
+
 - **Simulator walkthrough of onboarding + settings passed** (automated: idb taps + screenshots). Onboarding correctly offers only installed apps (in the simulator that is Messages and Phone; Spotify/Slack/Discord/Messenger show as "Not on this phone"). Contacts permission sheet handled; Settings "Test connection" reports the Luna model; tapping a voice speaks a preview. Cosmetic fixes landed (clipped pill labels, voice picker hint, gear accessibility label).
 - **Confirmation paths verified**: execute, revise ("actually say…" re-plans with the pending tool as context), cancel ("never mind"), and the no-model fast path for plain yes/no.
 - **Device build succeeds** (arm64, Metal whisper, signed with the Apple Development identity). Not yet installed on a device; only an iPad is plugged in.
