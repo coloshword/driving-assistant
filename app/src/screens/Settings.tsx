@@ -131,12 +131,23 @@ export default function Settings() {
   const testServer = useCallback(async () => {
     await saveServerUrl();
     setServerTest({ busy: true, result: null, ok: false });
-    const health = await serverHealth();
+    const base = await apiBaseUrl();
+    let msg: string;
+    let ok = false;
+    try {
+      const res = await fetch(`${base}/health`);
+      const body = await res.text();
+      ok = res.ok;
+      msg = `status ${res.status}: ${body.slice(0, 100)}`;
+    } catch (e: any) {
+      msg = `ERROR: ${String(e?.message ?? e)}`;
+    }
+    Alert.alert('Server test', `URL:\n${base}\n\n${msg}`);
     if (!mounted.current) return;
     setServerTest({
       busy: false,
-      ok: health.ok,
-      result: health.ok ? `Connected${health.model ? ` · ${health.model}` : ''}` : 'Could not reach the server. Check the URL and that the server is running.',
+      ok,
+      result: ok ? 'Connected' : msg,
     });
   }, [saveServerUrl]);
 

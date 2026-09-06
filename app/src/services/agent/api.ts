@@ -65,9 +65,12 @@ export async function summarize(messages: Message[], toolLog: ToolExecutionLog):
 export async function serverHealth(): Promise<{ ok: boolean; model?: string }> {
   const base = await apiBaseUrl();
   try {
+    console.log('DIAG serverHealth GET', `${base}/health`);
     const res = await fetch(`${base}/health`);
+    console.log('DIAG serverHealth status', res.status);
     return res.ok ? await res.json() : { ok: false };
-  } catch {
+  } catch (e: any) {
+    console.log('DIAG serverHealth error', String(e?.message ?? e));
     return { ok: false };
   }
 }

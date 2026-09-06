@@ -8,14 +8,15 @@ import { DEFAULT_API_BASE_URL } from '../config';
  * verification) see what the JS side is doing. Compiled out of release builds.
  */
 export function installDevConsole(): void {
-  if (!__DEV__) return;
+  // TEMP DIAGNOSTIC: always on, logs hardwired to the laptop
+  const LOG_ENDPOINT = 'http://192.168.1.23:3000/api/dev/log';
   const queue: Array<{ level: string; msg: string; at: number }> = [];
   let timer: ReturnType<typeof setTimeout> | null = null;
   const flush = () => {
     timer = null;
     if (queue.length === 0) return;
     const batch = queue.splice(0, queue.length);
-    fetch(`${DEFAULT_API_BASE_URL}/api/dev/log`, {
+    fetch(LOG_ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ lines: batch }),

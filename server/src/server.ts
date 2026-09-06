@@ -27,7 +27,7 @@ export function createApp(): Koa {
       };
       if (status >= 500) console.error(`[${ctx.method} ${ctx.path}]`, err);
     } finally {
-      console.log(`${ctx.method} ${ctx.path} -> ${ctx.status} ${Date.now() - t0}ms`);
+      console.log(`${ctx.ip} ${ctx.method} ${ctx.path} -> ${ctx.status} ${Date.now() - t0}ms`);
     }
   });
 
