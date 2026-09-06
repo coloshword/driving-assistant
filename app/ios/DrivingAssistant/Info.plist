@@ -53,8 +53,12 @@
 	<true/>
 	<key>NSAppTransportSecurity</key>
 	<dict>
+		<!-- Allow plain HTTP to a self-hosted server on the local network (dev / LAN use).
+		     NSAllowsLocalNetworking alone does not reliably exempt raw private-range IPs in
+		     Release builds, so arbitrary loads are enabled. Tighten to HTTPS-only once the
+		     server is hosted behind TLS. -->
 		<key>NSAllowsArbitraryLoads</key>
-		<false/>
+		<true/>
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
