@@ -18,14 +18,20 @@ export function validateExecutableTool(tool: AgentTool): void {
   spec.executable.parse(tool.toolParameters ?? {});
 }
 
-const YES = /^(yes|yeah|yep|yup|sure|ok|okay|do it|send it|send|go ahead|go for it|confirm|confirmed|correct|that's right|thats right|please do|affirmative|call|call it|play it)[.!]?$/i;
-const NO = /^(no|nope|nah|cancel|never mind|nevermind|don't|dont|stop|forget it|abort|no thanks)[.!]?$/i;
+const YES_WORDS = /^(yes|yeah|yep|yup|yea|sure|ok|okay|correct|confirm|confirmed|affirmative|please|do it|go ahead|go for it|send|send it|send that|call|call it|play it|that's right|thats right|sounds good|looks good|perfect|great|absolutely|of course|do that)$/i;
+const NO_WORDS = /^(no|nope|nah|cancel|never mind|nevermind|don't|dont|do not|stop|forget it|abort|no thanks|not now|hold on|wait)$/i;
+const YES_PHRASE = /^(yes|yeah|yep|yup|sure|ok|okay|please|go ahead and|go ahead|just)?[,\s]*(send|do|play|call|go|confirm|proceed|make the call|send it|send that|do it|go ahead)( it| that| the message| the text| ahead| now| please)*$/i;
+
+function normalize(u: string): string {
+  return u.trim().toLowerCase().replace(/[.!?,]+/g, ' ').replace(/\s+/g, ' ').trim();
+}
 
 /** Fast path for one-word answers so we skip the model round-trip. */
 export function quickDecision(utterance: string): PermissionResult | null {
-  const u = utterance.trim().toLowerCase().replace(/[,.!?]+$/g, '');
-  if (YES.test(u)) return { assistant: 'On it.', decision: 'execute' };
-  if (NO.test(u)) return { assistant: 'Okay, cancelled.', decision: 'cancel' };
+  const u = normalize(utterance);
+  if (!u || u.split(' ').length > 6) return null;
+  if (NO_WORDS.test(u)) return { assistant: 'Okay, cancelled.', decision: 'cancel' };
+  if (YES_WORDS.test(u) || YES_PHRASE.test(u)) return { assistant: 'On it.', decision: 'execute' };
   return null;
 }
 

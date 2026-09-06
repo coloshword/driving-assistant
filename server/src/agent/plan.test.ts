@@ -39,6 +39,12 @@ describe('quickDecision', () => {
     expect(quickDecision('Yes.')?.decision).toBe('execute');
     expect(quickDecision('send it')?.decision).toBe('execute');
     expect(quickDecision('no')?.decision).toBe('cancel');
+    expect(quickDecision('yeah send it')?.decision).toBe('execute');
+    expect(quickDecision('Yes, go ahead.')?.decision).toBe('execute');
+    expect(quickDecision('okay send that please')?.decision).toBe('execute');
+    expect(quickDecision('never mind')?.decision).toBe('cancel');
+    expect(quickDecision('no wait')).toBeNull();
     expect(quickDecision('actually make it fifteen')).toBeNull();
+    expect(quickDecision('yes but send it to Tom instead')).toBeNull();
   });
 });
