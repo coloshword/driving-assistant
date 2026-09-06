@@ -383,10 +383,16 @@ function AppRow({
   const loading = !state || state.status === null;
   const connected = !!state?.status?.connected;
   const missing = integration.urlScheme !== null && state?.installed === false;
+  // OAuth apps sign in through the browser, so they can be connected even when the
+  // app itself is not installed on this phone. Only block connecting for integrations
+  // whose action truly needs the local app.
+  const blockConnect = missing && !integration.requiresOAuth;
   const detail = connected
     ? `Connected${state?.status?.detail ? ` · ${state.status.detail}` : ''}`
     : missing
-    ? 'Not installed'
+    ? integration.requiresOAuth
+      ? 'App not installed, sign-in still works'
+      : 'Not installed'
     : 'Not connected';
 
   return (
@@ -407,7 +413,7 @@ function AppRow({
         (connected ? (
           <PrimaryButton title="Disconnect" variant="destructive" compact onPress={onDisconnect} loading={state?.busy} />
         ) : (
-          <PrimaryButton title="Connect" compact onPress={onConnect} loading={state?.busy} disabled={missing} />
+          <PrimaryButton title="Connect" compact onPress={onConnect} loading={state?.busy} disabled={blockConnect} />
         ))}
     </Row>
   );
