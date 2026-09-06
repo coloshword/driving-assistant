@@ -13,6 +13,7 @@ const BRAND: Record<IntegrationId, { bg: string; fg: string; letter: string }> =
   slack: { bg: '#4A154B', fg: '#ffffff', letter: '#' },
   discord: { bg: '#5865F2', fg: '#ffffff', letter: 'D' },
   messenger: { bg: '#0084FF', fg: '#ffffff', letter: 'm' },
+  maps: { bg: '#4285F4', fg: '#ffffff', letter: 'G' },
 };
 
 function Glyph({ id, fg }: { id: IntegrationId; fg: string }) {
@@ -32,6 +33,14 @@ function Glyph({ id, fg }: { id: IntegrationId; fg: string }) {
       return (
         <Path
           d="M12 5c-4.4 0-8 3-8 6.7 0 2 1 3.7 2.6 4.9L6 20l3.6-1.6c.8.2 1.6.3 2.4.3 4.4 0 8-3 8-6.7S16.4 5 12 5z"
+          fill={fg}
+        />
+      );
+    case 'maps':
+      // map pin
+      return (
+        <Path
+          d="M12 4a5.5 5.5 0 0 0-5.5 5.5c0 4.1 5.5 10.5 5.5 10.5s5.5-6.4 5.5-10.5A5.5 5.5 0 0 0 12 4zm0 7.6a2.1 2.1 0 1 1 0-4.2 2.1 2.1 0 0 1 0 4.2z"
           fill={fg}
         />
       );

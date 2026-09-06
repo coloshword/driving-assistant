@@ -14,6 +14,7 @@ export async function primeVocabulary(connected: IntegrationId[], contactNames: 
     messenger: 'Messenger',
     imessage: 'iMessage, text message',
     phone: 'call',
+    maps: 'navigate, directions, Google Maps',
   };
   const words = [
     'Hands-free driving assistant.',
