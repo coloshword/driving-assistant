@@ -14,6 +14,7 @@
 		761780ED2CA45674006654EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761780EC2CA45674006654EE /* AppDelegate.swift */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		9F603A45CC22BACCB8ECB06A /* sherpa-onnx-kokoro-en-v0_19 in Resources */ = {isa = PBXBuildFile; fileRef = 23E40A878B4770640D528D9B /* sherpa-onnx-kokoro-en-v0_19 */; };
+		DCCF8AD4F090CBC0703BD643 /* ggml-base.en-q5_1.bin in Resources */ = {isa = PBXBuildFile; fileRef = 40D938D0FA25EA13A622F312 /* ggml-base.en-q5_1.bin */; };
 		FED84D0A4B427A6FD77F872E /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
 
@@ -24,6 +25,7 @@
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = DrivingAssistant/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		23E40A878B4770640D528D9B /* sherpa-onnx-kokoro-en-v0_19 */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; path = "sherpa-onnx-kokoro-en-v0_19"; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-DrivingAssistant.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DrivingAssistant.debug.xcconfig"; path = "Target Support Files/Pods-DrivingAssistant/Pods-DrivingAssistant.debug.xcconfig"; sourceTree = "<group>"; };
+		40D938D0FA25EA13A622F312 /* ggml-base.en-q5_1.bin */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = archive.macbinary; path = "ggml-base.en-q5_1.bin"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-DrivingAssistant.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DrivingAssistant.release.xcconfig"; path = "Target Support Files/Pods-DrivingAssistant/Pods-DrivingAssistant.release.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-DrivingAssistant.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DrivingAssistant.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		761780EC2CA45674006654EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = DrivingAssistant/AppDelegate.swift; sourceTree = "<group>"; };
@@ -102,6 +104,7 @@
 				F931B4AF984E62979F9DFA88 /* ggml-tiny.en-q5_1.bin */,
 				8C558637823D167734B4B49C /* ggml-silero-v6.2.0.bin */,
 				23E40A878B4770640D528D9B /* sherpa-onnx-kokoro-en-v0_19 */,
+				40D938D0FA25EA13A622F312 /* ggml-base.en-q5_1.bin */,
 			);
 			name = Models;
 			path = Models;
@@ -182,6 +185,7 @@
 				5616534B558844AB2DBBFCE3 /* ggml-silero-v6.2.0.bin in Resources */,
 				9F603A45CC22BACCB8ECB06A /* sherpa-onnx-kokoro-en-v0_19 in Resources */,
 				FED84D0A4B427A6FD77F872E /* PrivacyInfo.xcprivacy in Resources */,
+				DCCF8AD4F090CBC0703BD643 /* ggml-base.en-q5_1.bin in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

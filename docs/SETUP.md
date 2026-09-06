@@ -60,3 +60,10 @@ Slack and Discord redirect URIs must be HTTPS, so those two need the server on a
 - `pod install` fails in codegen with `showColumn`: react-native-screens must stay at 4.23.x for RN 0.83.1 (pinned in package.json).
 - "Model error: … MISSING_FILE": run `scripts/fetch-models.sh`, then `npm run ios:configure`, then rebuild.
 - No audio in the simulator: the simulator uses the Mac's default input/output devices; check System Settings > Sound.
+
+## Dev tooling (simulator without a mic or hands)
+
+- `scripts/sim.sh say "play purple haze"` injects a transcript as if whisper had produced it (dev builds only); `scripts/sim.sh tap X Y`, `shot`, `relaunch`, `log` wrap idb / simctl. Custom-scheme URLs from `simctl openurl` trigger an iOS "Open in…?" prompt that needs a tap (`scripts/sim.sh tap 275 473` on an iPhone 17 Pro).
+- Dev deep links: `drivingassistant://dev/say?text=…`, `…/dev/onboarding-complete`, `…/dev/onboarding-reset`.
+- JS console output is mirrored to the server in dev builds (`POST /api/dev/log`, printed as `[app:log] …`), since RN 0.83 no longer shows it in the Metro terminal.
+- idb setup: see the header of `scripts/sim.sh` (the Homebrew formula needs a newer CLT than Xcode 26.2 ships, so use the prebuilt release).
