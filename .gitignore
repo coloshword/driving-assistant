@@ -1,0 +1,28 @@
+node_modules
+.DS_Store
+.env
+*.log
+.idea
+.vscode
+
+# native build artifacts (rebuilt by scripts/build-whisper.sh / fetched by scripts/fetch-models.sh)
+packages/whisper/ios/build-ios
+packages/whisper/ios/build-sim
+packages/whisper/ios/whisper.xcframework
+packages/kokoro/ios/sherpa-onnx.xcframework
+
+# on-device models (fetched by scripts/fetch-models.sh; ~400 MB)
+app/ios/Models/*
+!app/ios/Models/README.md
+
+# iOS
+app/ios/Pods
+app/ios/build
+app/ios/.xcode.env.local
+app/ios/DerivedData
+app/vendor/bundle
+app/ios/*.xcworkspace/xcuserdata
+app/ios/*.xcodeproj/xcuserdata
+app/ios/*.xcodeproj/project.xcworkspace/xcuserdata
+*.ipa
+*.jsbundle

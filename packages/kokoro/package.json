@@ -1,0 +1,20 @@
+{
+  "name": "da-kokoro",
+  "version": "1.0.0",
+  "description": "Kokoro TTS (sherpa-onnx) TurboModule for React Native (iOS)",
+  "license": "MIT",
+  "private": true,
+  "type": "commonjs",
+  "main": "src/NativeKokoro.ts",
+  "react-native": "src/NativeKokoro",
+  "peerDependencies": {
+    "react-native": "*"
+  },
+  "codegenConfig": {
+    "name": "DAKokoroSpec",
+    "type": "modules",
+    "jsSrcsDir": "src",
+    "android": {},
+    "ios": {}
+  }
+}

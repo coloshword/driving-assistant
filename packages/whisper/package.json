@@ -1,0 +1,20 @@
+{
+  "name": "da-whisper",
+  "version": "1.0.0",
+  "description": "whisper.cpp speech-to-text + Silero VAD TurboModule for React Native (iOS)",
+  "license": "MIT",
+  "private": true,
+  "type": "commonjs",
+  "main": "src/NativeWhisper.ts",
+  "react-native": "src/NativeWhisper",
+  "peerDependencies": {
+    "react-native": "*"
+  },
+  "codegenConfig": {
+    "name": "DAWhisperSpec",
+    "type": "modules",
+    "jsSrcsDir": "src",
+    "android": {},
+    "ios": {}
+  }
+}

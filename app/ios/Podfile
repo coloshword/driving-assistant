@@ -1,0 +1,43 @@
+# Resolve react_native_pods.rb with node to allow for hoisting
+require Pod::Executable.execute_command('node', ['-p',
+  'require.resolve(
+    "react-native/scripts/react_native_pods.rb",
+    {paths: [process.argv[1]]},
+  )', __dir__]).strip
+
+platform :ios, min_ios_version_supported
+prepare_react_native_project!
+
+linkage = ENV['USE_FRAMEWORKS']
+if linkage != nil
+  Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
+  use_frameworks! :linkage => linkage.to_sym
+end
+
+target 'DrivingAssistant' do
+  config = use_native_modules!
+
+  use_react_native!(
+    :path => config[:reactNativePath],
+    :app_path => "#{Pod::Config.instance.installation_root}/.."
+  )
+
+  post_install do |installer|
+    react_native_post_install(
+      installer,
+      config[:reactNativePath],
+      :mac_catalyst_enabled => false,
+    )
+
+    # Some generated per-file flags force dispatch objects to be non-ObjC in
+    # this pod, which breaks React-Core headers (inherited from WorkFromCar).
+    installer.pods_project.targets.each do |target|
+      next unless target.name == "DAWhisper"
+      target.source_build_phase.files.each do |file|
+        flags = file.settings&.[]("COMPILER_FLAGS")
+        next unless flags
+        file.settings["COMPILER_FLAGS"] = flags.split(" ").reject { |f| f == "-DOS_OBJECT_USE_OBJC=0" }.join(" ")
+      end
+    end
+  end
+end

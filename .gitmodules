@@ -1,0 +1,4 @@
+[submodule "app/ios/third_party/whisper.cpp"]
+	path = app/ios/third_party/whisper.cpp
+	url = https://github.com/ggml-org/whisper.cpp
+	branch = master

@@ -1,0 +1,41 @@
+{
+  "name": "driving-assistant-server",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Planning + OAuth backend for the Driving Assistant iOS app",
+  "type": "module",
+  "main": "dist/server.js",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "start": "tsx src/server.ts",
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "smoke": "tsx scripts/smoke.ts"
+  },
+  "dependencies": {
+    "@koa/cors": "^5.0.0",
+    "@koa/router": "^14.0.0",
+    "da-tools": "file:../packages/tools",
+    "dotenv": "^17.2.3",
+    "jsonrepair": "^3.13.2",
+    "koa": "^3.1.1",
+    "koa-bodyparser": "^4.4.1",
+    "openai": "^6.17.0",
+    "zod": "^3.25.76",
+    "da-types": "file:../types"
+  },
+  "devDependencies": {
+    "@types/koa": "^3.0.1",
+    "@types/koa__cors": "^5.0.1",
+    "@types/koa__router": "^12.0.5",
+    "@types/koa-bodyparser": "^4.3.13",
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
