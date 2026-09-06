@@ -181,6 +181,7 @@ export function useAssistant({ connectedIntegrations, enabled }: Options) {
 
   const handleTranscript = useCallback(async (raw: string) => {
     const text = raw.replace(/\s+/g, ' ').trim();
+    console.log('[assistant] transcript:', JSON.stringify(text));
     if (!text || HALLUCINATIONS.test(text) || text.length < 3) {
       setListenerState('listening');
       return;
