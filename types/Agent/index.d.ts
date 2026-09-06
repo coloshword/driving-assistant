@@ -53,7 +53,7 @@ export type SummarizeRouteResponseBody = {
 };
 
 /** Which integrations the device has connected; sent with every plan request so the planner only offers available tools. */
-export type IntegrationId = 'spotify' | 'slack' | 'discord' | 'messenger' | 'imessage' | 'phone';
+export type IntegrationId = 'spotify' | 'slack' | 'discord' | 'messenger' | 'imessage' | 'phone' | 'maps';
 
 export type PlanRequestBody = {
   messages: Message[];

@@ -12,7 +12,7 @@ const toolSchema = z.object({
   silent: z.boolean().optional(),
   requiresConfirmation: z.boolean().optional(),
 });
-const integrationSchema = z.enum(['spotify', 'slack', 'discord', 'messenger', 'imessage', 'phone']);
+const integrationSchema = z.enum(['spotify', 'slack', 'discord', 'messenger', 'imessage', 'phone', 'maps']);
 
 const planBody = z.object({
   messages: z.array(messageSchema).min(1),

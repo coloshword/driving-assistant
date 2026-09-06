@@ -47,6 +47,7 @@
 		<string>tel</string>
 		<string>shortcuts</string>
 		<string>maps</string>
+		<string>comgooglemaps</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>

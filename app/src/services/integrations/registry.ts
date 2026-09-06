@@ -6,9 +6,10 @@ import { discord } from './discord';
 import { messenger } from './messenger';
 import { imessage } from './imessage';
 import { phone } from './phone';
+import { maps } from './maps';
 
 /** Onboarding order: most-used first. */
-export const INTEGRATIONS: Integration[] = [spotify, imessage, phone, slack, discord, messenger];
+export const INTEGRATIONS: Integration[] = [spotify, maps, imessage, phone, slack, discord, messenger];
 
 export const INTEGRATION_BY_ID: Record<IntegrationId, Integration> = Object.fromEntries(
   INTEGRATIONS.map((i) => [i.id, i]),

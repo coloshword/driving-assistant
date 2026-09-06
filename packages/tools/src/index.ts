@@ -14,7 +14,7 @@ import * as z from 'zod';
  *  - `requiresConfirmation` tools speak the plan back and wait for a yes.
  */
 
-export type IntegrationId = 'spotify' | 'slack' | 'discord' | 'messenger' | 'imessage' | 'phone';
+export type IntegrationId = 'spotify' | 'slack' | 'discord' | 'messenger' | 'imessage' | 'phone' | 'maps';
 
 export type ToolSpec = {
   name: string;
@@ -112,6 +112,19 @@ const imessageSendExecutable = z.object({ to: z.string().min(3), toName: nstr(),
 
 const phoneCallPlanned = z.object({ to: nstr(), toName: nstr() });
 const phoneCallExecutable = z.object({ to: z.string().min(3), toName: nstr() });
+
+// ---------------------------------------------------------------------------
+// Maps (deep links into Google Maps, Apple Maps fallback)
+// ---------------------------------------------------------------------------
+
+const mapsNavigatePlanned = z.object({
+  destination: nstr(),
+  mode: z.enum(['driving', 'walking', 'transit']).nullable(),
+});
+const mapsNavigateExecutable = z.object({
+  destination: z.string().min(1),
+  mode: z.enum(['driving', 'walking', 'transit']).nullable(),
+});
 
 // ---------------------------------------------------------------------------
 // Catalog
@@ -224,6 +237,17 @@ export const TOOL_SPECS: ToolSpec[] = [
     instructions: `"messenger.draft" — Facebook Messenger has no API for sending as a person, so this copies the message to the clipboard and opens Messenger to the conversation. toolParameters: { to: string | null (person name, may stay null), text: string | null }. Requires confirmation. Tell the user they will need to tap send.`,
   },
 
+  // ---- Maps ----
+  {
+    name: 'maps.navigate', integration: 'maps', label: 'Maps',
+    planned: mapsNavigatePlanned, executable: mapsNavigateExecutable, silent: false, requiresConfirmation: false,
+    instructions: `"maps.navigate" — start turn-by-turn directions in Google Maps (or Apple Maps). Use for "navigate to X", "take me to X", "directions to X", "go home", "find the nearest gas station / coffee".
+  toolParameters:
+    - destination: string | null  (a place name, address, or a search like "nearest gas station"; "home" / "work" pass through as-is)
+    - mode: "driving" | "walking" | "transit" | null  (null = driving)
+  Execute immediately when destination is non-null; say "Starting directions to X".`,
+  },
+
   // ---- iMessage (draft hack) + phone ----
   {
     name: 'contacts.resolve', integration: 'imessage', label: 'Contacts',
@@ -284,6 +308,7 @@ export const INTEGRATION_LABELS: Record<IntegrationId, string> = {
   messenger: 'Messenger',
   imessage: 'Messages',
   phone: 'Phone',
+  maps: 'Maps',
 };
 
 /** Render planner instructions for the connected integrations only. */

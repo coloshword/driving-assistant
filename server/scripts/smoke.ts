@@ -22,7 +22,7 @@ async function post(path: string, body: unknown) {
   return { json, ms: Date.now() - t0, status: res.status };
 }
 
-const connected = ['spotify', 'slack', 'discord', 'messenger', 'imessage', 'phone'];
+const connected = ['spotify', 'slack', 'discord', 'messenger', 'imessage', 'phone', 'maps'];
 
 async function turn(label: string, messages: Msg[], contextTool?: unknown) {
   const { json, ms, status } = await post('/api/agent/plan', { messages, connectedIntegrations: connected, contextTool });
@@ -64,6 +64,9 @@ async function main() {
       void rev;
     }
   }
+
+  // 2b. Maps
+  await turn('maps.navigate', [{ role: 'user', content: 'take me to the nearest gas station' }]);
 
   // 3. Unsupported ask
   await turn('unsupported', [{ role: 'user', content: 'order me a pizza' }]);
