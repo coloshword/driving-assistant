@@ -10,7 +10,6 @@
 		0C25F5AE47A6976022481111 /* ggml-tiny.en-q5_1.bin in Resources */ = {isa = PBXBuildFile; fileRef = F931B4AF984E62979F9DFA88 /* ggml-tiny.en-q5_1.bin */; };
 		0C80B921A6F3F58F76C31292 /* libPods-DrivingAssistant.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-DrivingAssistant.a */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
-		4F0C61D92F708A1CC9A56957 /* ggml-base.en-q5_1.bin in Resources */ = {isa = PBXBuildFile; fileRef = D3BBA3E84E2CE05C32B5EC3A /* ggml-base.en-q5_1.bin */; };
 		5616534B558844AB2DBBFCE3 /* ggml-silero-v6.2.0.bin in Resources */ = {isa = PBXBuildFile; fileRef = 8C558637823D167734B4B49C /* ggml-silero-v6.2.0.bin */; };
 		761780ED2CA45674006654EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761780EC2CA45674006654EE /* AppDelegate.swift */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
@@ -29,7 +28,6 @@
 		761780EC2CA45674006654EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = DrivingAssistant/AppDelegate.swift; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = DrivingAssistant/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8C558637823D167734B4B49C /* ggml-silero-v6.2.0.bin */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = archive.macbinary; path = "ggml-silero-v6.2.0.bin"; sourceTree = "<group>"; };
-		D3BBA3E84E2CE05C32B5EC3A /* ggml-base.en-q5_1.bin */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = archive.macbinary; path = "ggml-base.en-q5_1.bin"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F931B4AF984E62979F9DFA88 /* ggml-tiny.en-q5_1.bin */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = archive.macbinary; path = "ggml-tiny.en-q5_1.bin"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -101,7 +99,6 @@
 			isa = PBXGroup;
 			children = (
 				F931B4AF984E62979F9DFA88 /* ggml-tiny.en-q5_1.bin */,
-				D3BBA3E84E2CE05C32B5EC3A /* ggml-base.en-q5_1.bin */,
 				8C558637823D167734B4B49C /* ggml-silero-v6.2.0.bin */,
 				23E40A878B4770640D528D9B /* sherpa-onnx-kokoro-en-v0_19 */,
 			);
@@ -181,7 +178,6 @@
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				0C25F5AE47A6976022481111 /* ggml-tiny.en-q5_1.bin in Resources */,
-				4F0C61D92F708A1CC9A56957 /* ggml-base.en-q5_1.bin in Resources */,
 				5616534B558844AB2DBBFCE3 /* ggml-silero-v6.2.0.bin in Resources */,
 				9F603A45CC22BACCB8ECB06A /* sherpa-onnx-kokoro-en-v0_19 in Resources */,
 			);
